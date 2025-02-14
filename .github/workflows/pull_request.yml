@@ -15,10 +15,10 @@ on:
 jobs:
   reuse_action:
     name: REUSE Compliance Check
-    uses: PathReportParsing_MRA_DeepDerm/.github/.github/workflows/reuse.yml@v2
+    uses: DaneshjouLab/.github/.github/workflows/reuse.yml@main
   markdown_link_check:
     name: Markdown Link Check
-    uses: DaneshjouLab/.github/.github/workflows/markdown-link-check.yml@v2
+    uses: DaneshjouLab/.github/.github/workflows/markdown-link-check.yml@main
   yamllint:
     name: YAML Lint Check
     runs-on: ubuntu-latest
