@@ -106,6 +106,15 @@ def calculate_accuracy(groupeddf):
         groupeddf['TP'] + groupeddf['TN'] + groupeddf['FP'] + groupeddf['FN']
     )
     return groupeddf
+def calculate_balanced_accuracy(groupeddf):
+    """Calculates balanced accuracy safely, ensuring no ZeroDivisionErrors."""
+    
+    sensitivity = safe_divide(groupeddf['TP'], groupeddf['TP'] + groupeddf['FN'])  # Recall or TPR
+    specificity = safe_divide(groupeddf['TN'], groupeddf['TN'] + groupeddf['FP'])  # TNR
+
+    groupeddf['Balanced_Accuracy'] = (sensitivity + specificity) / 2
+    return groupeddf
+
 
 def calculate_f1_score(groupeddf):
     """Calculates F1-score safely, ensuring no ZeroDivisionErrors."""
@@ -171,6 +180,7 @@ def calculate_metricsAll(df, group_by_columns, include_filters=None, exclude_fil
     calculate_f1_score(grouped_metrics)
     calculate_sensitivity(grouped_metrics)
     calculate_specificity(grouped_metrics)
+    calculate_balanced_accuracy(grouped_metrics)
     return grouped_metrics
 
 q2Results = calculate_metricsAll(
@@ -226,40 +236,6 @@ good becuase gpt 3.5 performs better than gpt 4 for lines 3 and 4
 ####################################################
 
 
-
-def calculate_metricsAll(df, group_by_columns, include_filters=None, exclude_filters=None):
-    """
-    Calculates accuracy, F1-score, sensitivity, and specificity for grouped data.
-
-    Parameters:
-    - df (DataFrame): Input DataFrame.
-    - group_by_columns (list): List of columns to group by.
-    - include_filters (dict, optional): Dictionary of columns and values to include (e.g., {'Model': ['gpt-4o']}).
-    - exclude_filters (dict, optional): Dictionary of columns and values to exclude (e.g., {'Model': ['o1-mini']}).
-
-    Returns:
-    - DataFrame with calculated metrics.
-    """
-
-    # Apply inclusion filters (keep only matching values)
-    if include_filters:
-        for col, values in include_filters.items():
-            df = df[df[col].isin(values)]
-
-    # Apply exclusion filters (remove matching values)
-    if exclude_filters:
-        for col, values in exclude_filters.items():
-            df = df[~df[col].isin(values)]
-
-    # Group by specified columns
-    grouped_metrics = df.groupby(group_by_columns).agg({
-        'TP': 'sum', 'TN': 'sum', 'FP': 'sum', 'FN': 'sum'
-    }).reset_index()
-    calculate_accuracy(grouped_metrics)
-    calculate_f1_score(grouped_metrics)
-    calculate_sensitivity(grouped_metrics)
-    calculate_specificity(grouped_metrics)
-    return grouped_metrics
 
 q2Results = calculate_metricsAll(
     dfFull,
@@ -319,41 +295,6 @@ agrees with saunders doesnt refute
 ####################################################
 
 
-
-def calculate_metricsAll(df, group_by_columns, include_filters=None, exclude_filters=None):
-    """
-    Calculates accuracy, F1-score, sensitivity, and specificity for grouped data.
-
-    Parameters:
-    - df (DataFrame): Input DataFrame.
-    - group_by_columns (list): List of columns to group by.
-    - include_filters (dict, optional): Dictionary of columns and values to include (e.g., {'Model': ['gpt-4o']}).
-    - exclude_filters (dict, optional): Dictionary of columns and values to exclude (e.g., {'Model': ['o1-mini']}).
-
-    Returns:
-    - DataFrame with calculated metrics.
-    """
-
-    # Apply inclusion filters (keep only matching values)
-    if include_filters:
-        for col, values in include_filters.items():
-            df = df[df[col].isin(values)]
-
-    # Apply exclusion filters (remove matching values)
-    if exclude_filters:
-        for col, values in exclude_filters.items():
-            df = df[~df[col].isin(values)]
-
-    # Group by specified columns
-    grouped_metrics = df.groupby(group_by_columns).agg({
-        'TP': 'sum', 'TN': 'sum', 'FP': 'sum', 'FN': 'sum'
-    }).reset_index()
-    calculate_accuracy(grouped_metrics)
-    calculate_f1_score(grouped_metrics)
-    calculate_sensitivity(grouped_metrics)
-    calculate_specificity(grouped_metrics)
-    return grouped_metrics
-
 q2Results = calculate_metricsAll(
     dfFull,
     group_by_columns=[
@@ -409,42 +350,6 @@ no they are not harder to critique because o1 mini results
 
 
 ####################################################
-
-
-
-def calculate_metricsAll(df, group_by_columns, include_filters=None, exclude_filters=None):
-    """
-    Calculates accuracy, F1-score, sensitivity, and specificity for grouped data.
-
-    Parameters:
-    - df (DataFrame): Input DataFrame.
-    - group_by_columns (list): List of columns to group by.
-    - include_filters (dict, optional): Dictionary of columns and values to include (e.g., {'Model': ['gpt-4o']}).
-    - exclude_filters (dict, optional): Dictionary of columns and values to exclude (e.g., {'Model': ['o1-mini']}).
-
-    Returns:
-    - DataFrame with calculated metrics.
-    """
-
-    # Apply inclusion filters (keep only matching values)
-    if include_filters:
-        for col, values in include_filters.items():
-            df = df[df[col].isin(values)]
-
-    # Apply exclusion filters (remove matching values)
-    if exclude_filters:
-        for col, values in exclude_filters.items():
-            df = df[~df[col].isin(values)]
-
-    # Group by specified columns
-    grouped_metrics = df.groupby(group_by_columns).agg({
-        'TP': 'sum', 'TN': 'sum', 'FP': 'sum', 'FN': 'sum'
-    }).reset_index()
-    calculate_accuracy(grouped_metrics)
-    calculate_f1_score(grouped_metrics)
-    calculate_sensitivity(grouped_metrics)
-    calculate_specificity(grouped_metrics)
-    return grouped_metrics
 
 q2Results = calculate_metricsAll(
     dfFull,
@@ -502,41 +407,6 @@ interesting that CoT does wrose among all o1 mini because CoT
 
 ####################################################
 
-
-
-def calculate_metricsAll(df, group_by_columns, include_filters=None, exclude_filters=None):
-    """
-    Calculates accuracy, F1-score, sensitivity, and specificity for grouped data.
-
-    Parameters:
-    - df (DataFrame): Input DataFrame.
-    - group_by_columns (list): List of columns to group by.
-    - include_filters (dict, optional): Dictionary of columns and values to include (e.g., {'Model': ['gpt-4o']}).
-    - exclude_filters (dict, optional): Dictionary of columns and values to exclude (e.g., {'Model': ['o1-mini']}).
-
-    Returns:
-    - DataFrame with calculated metrics.
-    """
-
-    # Apply inclusion filters (keep only matching values)
-    if include_filters:
-        for col, values in include_filters.items():
-            df = df[df[col].isin(values)]
-
-    # Apply exclusion filters (remove matching values)
-    if exclude_filters:
-        for col, values in exclude_filters.items():
-            df = df[~df[col].isin(values)]
-
-    # Group by specified columns
-    grouped_metrics = df.groupby(group_by_columns).agg({
-        'TP': 'sum', 'TN': 'sum', 'FP': 'sum', 'FN': 'sum'
-    }).reset_index()
-    calculate_accuracy(grouped_metrics)
-    calculate_f1_score(grouped_metrics)
-    calculate_sensitivity(grouped_metrics)
-    calculate_specificity(grouped_metrics)
-    return grouped_metrics
 
 q2Results = calculate_metricsAll(
     dfFull,
